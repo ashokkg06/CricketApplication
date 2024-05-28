@@ -1,0 +1,93 @@
+<div *ngIf="!teamStats">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<div class="font-family" *ngIf="teamStats">
+    <header class="sticky-header">
+        <nav>
+            <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+        </nav>
+    </header>
+
+    <div class="body-margin-p">
+        <div class="ds-box" style="background: aliceblue;">
+
+            <div class="ds-flex ds-py-3 bg-blue">
+                <div class="ds-flex ds-flex-col ds-grow ds-justify-center">
+                    <span class="ds-text-title-ys ds-font-bold ds-capitalize ds-font-large">
+                        {{ teamName.replace('-',' ') }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="w-full ds-flex border-b border-solid ds-bg-bordergrey">
+                <div class="w-1/2  p-8 ds-font-medium">
+                    <div class="p-2 ds-border-bt"> Number of Matches </div>
+                    <div class="p-2 ds-border-bt"> Number of Matches Won </div>
+                    <div class="p-2 ds-border-bt"> Number of Matches Lost </div>
+                    <div class="p-2 ds-border-bt"> Number of Matches Tied </div>
+                    <div class="p-2 ds-border-bt"> Number of Matches No Result </div>
+                    <div class="p-2 ds-border-bt"> Number of Runs Scored </div>
+                    <div class="p-2 ds-border-bt"> Number of Runs conceded </div>
+                    <div class="p-2 ds-border-bt"> Number of Wickets Taken  </div>
+                    <div class="p-2 ds-border-bt"> Number of Wickets lost </div>
+                    <div class="p-2 ds-border-bt"> Position in Points Table </div>
+                </div>
+            
+                <div class="w-1/2  p-8 ds-font-medium">
+                    <div class="p-2 ds-border-bt"> {{ teamStats.matches }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.won }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.lost }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.tied }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.noResult }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.runsScored }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.runsConceded }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.wicketsTaken }}</div>
+                    <div class="p-2 ds-border-bt"> {{ teamStats.wicketsLost }}</div>
+                    <div class="p-2 ds-border-bt">
+                        {{ teamStats.pointsTablePosition }}{{ teamStats.pointsTablePosition % 10 === 1? 'st': (teamStats.pointsTablePosition%10 === 2? 'nd' : (teamStats.pointsTablePosition % 10 === 3? 'rd' : 'th')) }}                        
+                    </div>
+                </div>
+            <br>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet />

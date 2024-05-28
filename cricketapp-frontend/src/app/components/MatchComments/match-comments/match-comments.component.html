@@ -1,0 +1,135 @@
+<div *ngIf="!commentary">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<div class="font-family" *ngIf="commentary">
+    <header class="sticky-header">
+        <nav>
+            <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+        </nav>
+    </header>
+    <div class="bg-color-prof">
+        <br>
+        <br>
+        <!-- Main content of the website goes here -->
+        <div class="ds-flex ds-justify-between m-content body-margin">
+            <div class="h6 ds-font-bold" style="font-size: 22px;"> IPL {{ commentary.matchStatistics.date.split("-")[2] }} Results </div>
+            <form class="form-inline my-2 my-lg-0">
+            <input style="margin-top:35px; margin-bottom:25px;" type="search" (ngModelChange)="searchComments(key.value)" #key="ngModel" ngModel
+            name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search" required>
+          </form>
+        </div>
+
+        <div class="matches-div body-margin">
+            <div class="ds-flex ds-flex-column ds-items-center ds-justify-start ds-justify-between ds-pd">
+                <div class="ds-flex ds-flex-column ds-gap">
+                    <div class="ds-flex ds-flex-column ds-gap">
+                        <p style="font-size: 15px; opacity:80%;">
+                            {{ commentary.matchStatistics.date }},
+                            {{ commentary.matchStatistics.matchNumber }}{{ (commentary.matchStatistics.matchNumber % 10 == 1) ? "st" : ((commentary.matchStatistics.matchNumber % 10 == 2) ? "nd" : ((commentary.matchStatistics.matchNumber % 10 == 3) ? "rd" : "th")) }} Match,
+                            {{ commentary.matchStatistics.location }}, {{ commentary.matchStatistics.venue }}
+                        </p>
+                        <div style="margin-left: 50px; margin-right: 75px; line-height: 25px;" class="ds-flex ds-flex-column ds-gap">
+                            <div class="ds-flex ds-flex-column ds-gap">
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="commentary.matchStatistics.team1 === commentary.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ commentary.matchStatistics.team1 }}</div>
+                                    <div>{{ commentary.matchStatistics.team1Score }}/{{ commentary.matchStatistics.team1Wickets }}</div>
+                                </div>
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="commentary.matchStatistics.team2 === commentary.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ commentary.matchStatistics.team2 }}</div>
+                                    <div>
+                                        <span style="opacity: 75%">(overs: {{ commentary.matchStatistics.team2Overs }}/{{ commentary.matchStatistics.team2Overs < 20.0 ? (commentary.matchStatistics.team2Wickets < 10 ? (commentary.matchStatistics.team2Score < commentary.matchStatistics.team1Score ? commentary.matchStatistics.team2Overs : 20) : 20) : 20 }})</span>
+                                        {{ commentary.matchStatistics.team2Score }}/{{ commentary.matchStatistics.team2Wickets }}
+                                    </div>
+                                </div>
+                                <div class="ds-flex ds-justify-center">
+                                    <p *ngIf="commentary.matchStatistics.winner !== 'No Result'">
+                                        {{ commentary.matchStatistics.winner }} won by {{ commentary.matchStatistics.winnerRuns === 0 ? '' : (commentary.matchStatistics.winnerRuns + ' runs') }}{{ commentary.matchStatistics.winnerWickets === 0 ? '' : (' ' + commentary.matchStatistics.winnerWickets + ' wickets') }}{{ commentary.matchStatistics.team2Overs < 20.0 ? (commentary.matchStatistics.team2Wickets < 10 ? (commentary.matchStatistics.team2Score < commentary.matchStatistics.team1Score ? ' (DLS Method)' : '') : '') : '' }}
+                                    </p>
+                                    <p *ngIf="commentary.matchStatistics.winner === 'No Result'">No Result</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <header class="sticky-headers">
+                    <nav class="ds-border-top">
+                        <ul>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/info" routerLinkActive="active" ariaCurrentWhenActive="page" >INFO</a></li>
+                            <li class="ds-current-page"><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/commentary" routerLinkActive="active" ariaCurrentWhenActive="page" >COMMENTARY</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/scorecard" routerLinkActive="active" ariaCurrentWhenActive="page" > SCORECARD </a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/points-table" routerLinkActive="active" ariaCurrentWhenActive="page" >TABLE</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/squads" routerLinkActive="active" ariaCurrentWhenActive="page" >SQUADS</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <br>
+        <div class="body-margin">
+            <div class="ds-box">
+                <div class="ds-text-title-xs border-b border-solid ds-bg-bordergrey ds-bg-bt">                    
+                    <div *ngIf="commentary.matchStatistics.winner === 'No Result'" class="ds-flex ds-justify-center items-center p-1-rem ds-bg-bt gap" >
+                        Match abandoned! <span class="ds-font-bold"> No Result. </span>
+                    </div>
+                    <div *ngIf="!(commentary.matchStatistics.winner === 'No Result')" class="ds-flex ds-justify-center items-center p-1-rem ds-bg-bt gap">
+                        {{ commentary.matchStatistics.winner === commentary.matchStatistics.team1? "Wow, What a Defend!, ": "Wow, What a chase we are witnessed!, " }}
+                        <span class="ds-font-bold"> {{commentary.matchStatistics.winner}} </span> won by {{ commentary.matchStatistics.winnerRuns == 0? "": (commentary.matchStatistics.winnerRuns + " runs.")}} {{ commentary.matchStatistics.winnerWickets==0? "" : commentary.matchStatistics.winnerWickets + " wickets." }} {{ commentary.matchStatistics.team2Overs<20.0? (commentary.matchStatistics.team2Wickets<10? (commentary.matchStatistics.team2Score < commentary.matchStatistics.team1Score? "(DLS Method.)": "") : "") : ""}}
+                    </div>
+                    <div *ngFor="let comments of [1,2]; let i=index">
+                        <div class="ds-grid p-2 ds-grid-comment ds-bg-bt" *ngFor="let comment of commentary.matchComments[i];">
+                            <div class="ds-flex ds-justify-center items-center p-75-rem"> {{ comment.overs }} </div>
+                            <div class="ds-flex ds-justify-center items-center ds-boundary ds-font-boundary ds-font-bold {{ comment.outcome === '4'? 'ds-boundary-4': (comment.outcome === '6'? 'ds-boundary-6' : (comment.outcome === 'w'? 'ds-boundary-w' : 'ds-boundary-1')) }} ds-w-10 ds-h-10"> 
+                                {{ comment.comment.endsWith("no run,") || comment.comment.endsWith("no ball,")? "•" : comment.outcome}}
+                            </div>
+                            <div class="p-75-rem"> {{ comment.comment }} </div>
+                        </div>
+                        <div *ngIf="comments===1" style="border-bottom: 1px solid; font-size: large;" class="ds-flex ds-justify-center items-center p-75-rem ds-gb-bt"> Innings Break </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+<router-outlet />

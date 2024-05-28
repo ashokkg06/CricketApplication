@@ -1,0 +1,132 @@
+<div *ngIf="!matchSquad">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<div class="font-family" *ngIf="matchSquad">
+    <header class="sticky-header">
+        <nav>
+            <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+        </nav>
+    </header>
+    <div class="bg-color-prof">
+        <br>
+        <br>
+        <!-- Main content of the website goes here -->
+        <div class="m-content body-margin">
+            <div class="h6 ds-font-bold" style="font-size: 22px;"> IPL {{ matchSquad.matchStatistics.date.split("-")[2] }} Results </div>
+        </div>
+
+        <div class="matches-div body-margin">
+            <div class="ds-flex ds-flex-column ds-items-center ds-justify-start ds-justify-between ds-pd">
+                <div class="ds-flex ds-flex-column ds-gap">
+                    <div class="ds-flex ds-flex-column ds-gap">
+                        <p style="font-size: 15px; opacity:80%;">
+                            {{ matchSquad.matchStatistics.date }},
+                            {{ matchSquad.matchStatistics.matchNumber }}{{ (matchSquad.matchStatistics.matchNumber % 10 == 1) ? "st" : ((matchSquad.matchStatistics.matchNumber % 10 == 2) ? "nd" : ((matchSquad.matchStatistics.matchNumber % 10 == 3) ? "rd" : "th")) }} Match,
+                            {{ matchSquad.matchStatistics.location }}, {{ matchSquad.matchStatistics.venue }}
+                        </p>
+                        <div style="margin-left: 50px; margin-right: 75px; line-height: 25px;" class="ds-flex ds-flex-column ds-gap">
+                            <div class="ds-flex ds-flex-column ds-gap">
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="matchSquad.matchStatistics.team1 === matchSquad.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ matchSquad.matchStatistics.team1 }}</div>
+                                    <div>{{ matchSquad.matchStatistics.team1Score }}/{{ matchSquad.matchStatistics.team1Wickets }}</div>
+                                </div>
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="matchSquad.matchStatistics.team2 === matchSquad.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ matchSquad.matchStatistics.team2 }}</div>
+                                    <div>
+                                        <span style="opacity: 75%">(overs: {{ matchSquad.matchStatistics.team2Overs }}/{{ matchSquad.matchStatistics.team2Overs < 20.0 ? (matchSquad.matchStatistics.team2Wickets < 10 ? (matchSquad.matchStatistics.team2Score < matchSquad.matchStatistics.team1Score ? matchSquad.matchStatistics.team2Overs : 20) : 20) : 20 }})</span>
+                                        {{ matchSquad.matchStatistics.team2Score }}/{{ matchSquad.matchStatistics.team2Wickets }}
+                                    </div>
+                                </div>
+                                <div class="ds-flex ds-justify-center">
+                                    <p *ngIf="matchSquad.matchStatistics.winner !== 'No Result'">
+                                        {{ matchSquad.matchStatistics.winner }} won by {{ matchSquad.matchStatistics.winnerRuns === 0 ? '' : (matchSquad.matchStatistics.winnerRuns + ' runs') }}{{ matchSquad.matchStatistics.winnerWickets === 0 ? '' : (' ' + matchSquad.matchStatistics.winnerWickets + ' wickets') }}{{ matchSquad.matchStatistics.team2Overs < 20.0 ? (matchSquad.matchStatistics.team2Wickets < 10 ? (matchSquad.matchStatistics.team2Score < matchSquad.matchStatistics.team1Score ? ' (DLS Method)' : '') : '') : '' }}
+                                    </p>
+                                    <p *ngIf="matchSquad.matchStatistics.winner === 'No Result'">No Result</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <header class="sticky-headers">
+                    <nav class="ds-border-top">
+                        <ul>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/info" routerLinkActive="active" ariaCurrentWhenActive="page" >INFO</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/commentary" routerLinkActive="active" ariaCurrentWhenActive="page" >COMMENTARY</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/scorecard" routerLinkActive="active" ariaCurrentWhenActive="page" > SCORECARD </a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/points-table" routerLinkActive="active" ariaCurrentWhenActive="page" >TABLE</a></li>
+                            <li class="ds-current-page"><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/squads" routerLinkActive="active" ariaCurrentWhenActive="page" >SQUADS</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <br>
+    
+        <div class="body-margin">
+            <div class="ds-box">
+    
+                <div class="ds-flex ds-py-3 bg-blue">
+                    <div class="ds-flex ds-flex-col ds-grow ds-justify-center">
+                        <span class="ds-text-title-ys ds-font-bold ds-capitalize ds-font-large">
+                            Match Squad ({{ matchSquad.matchStatistics.shortTeam1 }} vs {{ matchSquad.matchStatistics.shortTeam2 }})
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="w-full ds-flex ds-text-title-xs border-b border-solid ds-bg-bordergrey">
+                    <div class="w-1/2  p-8 ds-font-medium" *ngFor="let squadss of matchSquad.squads; let i=index;">
+                        <div class="p-2 bg-lightgreen">
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> {{ i==0? matchSquad.matchStatistics.team1 : matchSquad.matchStatistics.team2 }} </div>
+                        </div>
+                        <div *ngFor="let squad of squadss">
+                            <a class="ds-flex ds-justify-center items-center p-2 ds-text-dec-none  {{ i==0? 'ds-border-bt':'ds-border-bt-rgt'}}" href="playerstats/{{squad.replace(' ', '-')}}"> {{squad}} </a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+<router-outlet/>

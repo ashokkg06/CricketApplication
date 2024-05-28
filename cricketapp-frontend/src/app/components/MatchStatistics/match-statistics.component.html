@@ -1,0 +1,121 @@
+<div *ngIf="!matchStatistics">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<div class="font-family bg-color-prof" *ngIf="matchStatistics">
+  <header class="sticky-header">
+      <nav>
+          <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+      </nav>
+  </header>
+  <div>
+      <br>
+      <br>
+      <!-- Main content of the website goes here -->
+      <div class="ds-flex dm-content ds-justify-between dropdown ds-dropdown">
+        <select (change)="onNavigate($event)">
+          <option value="" disabled selected>Choose Season</option>
+          <ng-container *ngFor="let seasonNumber of seasons">
+            <option [value]="'/iplseries/' + seasonNumber + '/matches'"> IPL {{seasonNumber}} </option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="ds-flex dm-content ds-justify-between">
+          <div class="h6 ds-font-bold" style="font-size: 22px;"> IPL {{ season }} Results </div>
+          <form class="form-inline my-2 my-lg-0">
+            <input style="margin-top:20px; margin-bottom:25px;" type="search" (ngModelChange)="searchMatches(key.value)" #key="ngModel" ngModel
+            name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search" required>
+          </form>
+          <!-- <div class="ds-container">
+            <div class="search-bar">
+              <div id="select">
+                <div id="selectText"> All categories </div>
+                <img src="https://cdn-icons-png.flaticon.com/512/60/60995.png"> 
+                <ul id="list">
+                  <li class="options"> All </li>
+                  <li class="options"> Match Number </li>
+                  <li class="options"> Date </li>
+                  <li class="options"> Teams </li>
+                  <li class="options"> Winners </li>
+                </ul>
+              </div>
+              <input type="text" id="inputfield" placeholder="Search in All Categories">
+            </div>
+          </div> -->
+      </div>
+    <div class="dm-matches-div">
+      <div class="ds-flex ds-flex-column ds-items-center ds-justify-start ds-justify-between">
+        <div *ngFor="let stats of matchStatistics" class="ds-flex ds-flex-column ds-gap">
+          <div class="ds-flex ds-flex-column ds-gap">
+            <div class="date-top">{{ stats.date }}</div>
+            <a routerLink="/iplseries/{{season}}/matches/{{stats.matchNumber}}" routerLinkActive="active" ariaCurrentWhenActive="page" style="cursor: pointer; text-decoration: none; color: black;">
+              <div class="ds-flex ds-flex-column ds-gap bg-color-blue dm-ds-pd">
+                <p style="font-size: 15px; opacity:80%;">
+                  {{ stats.matchNumber }}{{ (stats.matchNumber % 10 == 1) ? "st" : ((stats.matchNumber % 10 == 2) ? "nd" : ((stats.matchNumber % 10 == 3) ? "rd" : "th")) }} Match,
+                  {{ stats.location }}, {{ stats.venue }}
+                </p>
+                <div style="margin-left: 50px; margin-right: 75px" class="ds-flex ds-flex-column ds-gap">
+                  <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="stats.team1 === stats.winner ? 'bold' : 'normal'">
+                    <div>{{ stats.team1 }}</div>
+                    <div>{{ stats.team1Score }}/{{ stats.team1Wickets }}</div>
+                  </div>
+                  <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="stats.team2 === stats.winner ? 'bold' : 'normal'">
+                    <div>{{ stats.team2 }}</div>
+                    <div>
+                      <span style="opacity: 50%; font-weight: normal">(overs: {{ stats.team2Overs }}/{{ stats.team2Overs < 20.0 ? (stats.team2Wickets < 10 ? (stats.team2Score < stats.team1Score ? stats.team2Overs : 20) : 20) : 20 }})</span>
+                      {{ stats.team2Score }}/{{ stats.team2Wickets }}
+                    </div>
+                  </div>
+                  <div class="ds-flex ds-justify-center">
+                    <p *ngIf="stats.winner !== 'No Result'">{{ stats.winner }} won by {{ stats.winnerRuns === 0 ? '' : (stats.winnerRuns + ' runs') }}{{ stats.winnerWickets === 0 ? '' : (stats.winnerWickets + ' wickets') }} {{ stats.team2Overs < 20.0 ? (stats.team2Wickets < 10 ? (stats.team2Score < stats.team1Score ? '(DLS Method)' : '') : '') : '' }}</p>
+                    <p *ngIf="stats.winner === 'No Result'">No Result</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="./assets/script.js"></script>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    z-index: 1000;
+}
+
+.sticky-header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.sticky-header nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 15px;
+}
+
+li:hover {
+    background-color: green;
+}
+
+.sticky-header nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.content {
+    padding: 50px;
+}
+
+.m-content {
+    margin-left: 26%;
+    margin-right: 26%;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 30px;
+}
+
+h6 {
+    margin-top: 120px;
+    margin-bottom: 30px;
+}
+
+.matches-div {
+    margin-left: 26%;
+    margin-right: 26%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 1rem;
+}
+
+.ds-flex {
+    display: flex;
+}
+
+.ds-flex-column {
+    flex-direction: column;
+}
+
+.ds-flex-row {
+    flex-direction: row;
+}
+
+.ds-justify-start {
+    justify-content: flex-start;
+}
+
+.ds-justify-between {
+    justify-content: space-between;
+}
+
+.ds-justify-center {
+    justify-content: center;
+}
+
+.ds-gap {
+    gap: 1rem;
+}
+
+.date-top {
+    background-color: #737373;
+    padding: 10px;
+    opacity: 70%;
+}

@@ -1,0 +1,180 @@
+<div *ngIf="!scorecard">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<ng-container *ngIf="scorecard">
+<div class="font-family">
+    <header class="sticky-header">
+        <nav>
+            <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+        </nav>
+    </header>
+    <div class="bg-color-prof">
+        <br>
+        <br>
+        <!-- Main content of the website goes here -->
+        <div class="m-content body-margin">
+            <div class="h6 ds-font-bold" style="font-size: 22px;"> IPL {{ scorecard.matchStatistics.date.split("-")[2] }} Results </div>
+        </div>
+
+        <div class="matches-div body-margin">
+            <div class="ds-flex ds-flex-column ds-items-center ds-justify-start ds-justify-between ds-pd">
+                <div class="ds-flex ds-flex-column ds-gap">
+                    <div class="ds-flex ds-flex-column ds-gap">
+                        <p style="font-size: 15px; opacity:80%;">
+                            {{ scorecard.matchStatistics.date }},
+                            {{ scorecard.matchStatistics.matchNumber }}{{ (scorecard.matchStatistics.matchNumber % 10 == 1) ? "st" : ((scorecard.matchStatistics.matchNumber % 10 == 2) ? "nd" : ((scorecard.matchStatistics.matchNumber % 10 == 3) ? "rd" : "th")) }} Match,
+                            {{ scorecard.matchStatistics.location }}, {{ scorecard.matchStatistics.venue }}
+                        </p>
+                        <div style="margin-left: 50px; margin-right: 75px; line-height: 25px;" class="ds-flex ds-flex-column ds-gap">
+                            <div class="ds-flex ds-flex-column ds-gap">
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="scorecard.matchStatistics.team1 === scorecard.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ scorecard.matchStatistics.team1 }}</div>
+                                    <div>{{ scorecard.matchStatistics.team1Score }}/{{ scorecard.matchStatistics.team1Wickets }}</div>
+                                </div>
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="scorecard.matchStatistics.team2 === scorecard.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ scorecard.matchStatistics.team2 }}</div>
+                                    <div>
+                                        <span style="opacity: 75%">(overs: {{ scorecard.matchStatistics.team2Overs }}/{{ scorecard.matchStatistics.team2Overs < 20.0 ? (scorecard.matchStatistics.team2Wickets < 10 ? (scorecard.matchStatistics.team2Score < scorecard.matchStatistics.team1Score ? scorecard.matchStatistics.team2Overs : 20) : 20) : 20 }})</span>
+                                        {{ scorecard.matchStatistics.team2Score }}/{{ scorecard.matchStatistics.team2Wickets }}
+                                    </div>
+                                </div>
+                                <div class="ds-flex ds-justify-center">
+                                    <p *ngIf="scorecard.matchStatistics.winner !== 'No Result'">
+                                        {{ scorecard.matchStatistics.winner }} won by {{ scorecard.matchStatistics.winnerRuns === 0 ? '' : (scorecard.matchStatistics.winnerRuns + ' runs') }}{{ scorecard.matchStatistics.winnerWickets === 0 ? '' : (' ' + scorecard.matchStatistics.winnerWickets + ' wickets') }}{{ scorecard.matchStatistics.team2Overs < 20.0 ? (scorecard.matchStatistics.team2Wickets < 10 ? (scorecard.matchStatistics.team2Score < scorecard.matchStatistics.team1Score ? ' (DLS Method)' : '') : '') : '' }}
+                                    </p>
+                                    <p *ngIf="scorecard.matchStatistics.winner === 'No Result'">No Result</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <header class="sticky-headers">
+                    <nav class="ds-border-top">
+                        <ul>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/info" routerLinkActive="active" ariaCurrentWhenActive="page">INFO</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/commentary" routerLinkActive="active" ariaCurrentWhenActive="page">COMMENTARY</a></li>
+                            <li class="ds-current-page"><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/scorecard" routerLinkActive="active" ariaCurrentWhenActive="page"> SCORECARD </a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/points-table" routerLinkActive="active" ariaCurrentWhenActive="page" >TABLE</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/squads" routerLinkActive="active" ariaCurrentWhenActive="page" >SQUADS</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <br>
+
+        <div class="body-margin">
+            <ng-container *ngIf="scorecard">
+                <div class="ds-box" *ngFor="let team of [scorecard.matchStatistics.team1, scorecard.matchStatistics.team2]; let i = index;">
+                    <div class="ds-flex ds-py-3 bg-blue">
+                        <div class="ds-flex ds-flex-col ds-grow ds-justify-center">
+                            <span class="ds-text-title-ys ds-font-bold ds-capitalize ds-font-large">{{ team }}</span>
+                        </div>
+                    </div>
+                    <div class="ds-text-title-xs border-b border-solid ds-bg-bordergrey">
+                        <!-- BATTING SECTION -->
+                        <div class="ds-grid p-2 ds-grid-one-sizes bg-lightgreen">
+                            <div class="ds-font-bold"> BATTING </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> &nbsp; </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> R </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> B </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> 4s </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> 6s </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> SR </div>
+                        </div>
+                        <div class="ds-grid p-2 ds-grid-one-sizes ds-bg-bt" *ngFor="let batter of scorecard.batting[i]">
+                            <a href="/playerstats/{{ batter.batter.replace(' ', '-') }}" class="ds-text-dec-none">{{ batter.batter }}</a>
+                            <div class="ds-flex ds-op-5">{{ batter.comment }}</div>
+                            <div class="ds-flex ds-justify-center items-center">{{ batter.runs }}</div>
+                            <div class="ds-flex ds-justify-center items-center">{{ batter.ballsFaced }}</div>
+                            <div class="ds-flex ds-justify-center items-center">{{ batter.fours }}</div>
+                            <div class="ds-flex ds-justify-center items-center">{{ batter.sixes }}</div>
+                            <div class="ds-flex ds-justify-center items-center">{{ batter.strikeRate }}</div>
+                        </div>
+
+                        <!-- EXTRAS -->
+                        <div class="ds-grid p-2 ds-grid-one-sizes items-center ds-bg-bt">
+                            <div class="ds-font-bold"> Extras </div>
+                            <div class="ds-op-5 ">
+                                <span> (b {{ scorecard.extras[i].byes }},
+                                        lb {{ scorecard.extras[i].legByes }},
+                                        wd {{ scorecard.extras[i].wides }},
+                                        nb {{ scorecard.extras[i].noBalls }} )
+                                </span>
+                            </div>
+                            <div class="ds-flex ds-justify-center items-center"><span class="ds-font-bold">{{ scorecard.extras[i].noBalls + scorecard.extras[i].legByes + scorecard.extras[i].wides + scorecard.extras[i].byes }}</span></div>
+                        </div>
+
+                        <!-- TOTAL -->
+                        <div class="ds-grid p-2 ds-grid-three-sizes items-center">
+                            <div class="ds-font-bold"> TOTAL </div>
+                            <div class="ds-op-5"> {{ scorecard.total[i].overs }} Overs (RR : {{ (scorecard.total[i].score / scorecard.total[i].overs) | number: '1.1-1' }})</div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> {{ scorecard.total[i].score }} </div>
+                        </div>
+                    </div>
+
+                    <!-- BOWLING SECTION -->
+                    <div class="ds-text-title-xs border-b border-solid ds-bg-bordergrey">
+                        <div class="ds-grid p-2 ds-grid-two-sizes bg-lightgreen">
+                            <div class="ds-font-bold"> BOWLING </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> O </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> R </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> W </div>
+                            <div class="ds-flex ds-justify-center items-center ds-font-bold"> ECO </div>
+                        </div>
+                        <div class="ds-grid p-2 ds-grid-two-sizes ds-bg-bt" *ngFor="let bowler of scorecard.bowling[i]">
+                            <a href="/playerstats/{{ bowler.name.replace(' ', '-') }}" class="ds-text-dec-none">{{ bowler.name }}</a>
+                            <div class="ds-flex ds-justify-center items-center"> {{ bowler.overs }} </div>
+                            <div class="ds-flex ds-justify-center items-center"> {{ bowler.runs }} </div>
+                            <div class="ds-flex ds-justify-center items-center"> {{ bowler.wickets }} </div>
+                            <div class="ds-flex ds-justify-center items-center"> {{ bowler.economy }} </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <br>
+    </div>
+</div>
+</ng-container>
+<router-outlet/>

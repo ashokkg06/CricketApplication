@@ -1,0 +1,150 @@
+<div *ngIf="!matchData">
+    <main>
+        <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#5ebd3e" />
+                    <stop offset="33%" stop-color="#ffb900" />
+                    <stop offset="67%" stop-color="#f78200" />
+                    <stop offset="100%" stop-color="#e23838" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23838" />
+                    <stop offset="33%" stop-color="#973999" />
+                    <stop offset="67%" stop-color="#009cdf" />
+                    <stop offset="100%" stop-color="#5ebd3e" />
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke-linecap="round" stroke-width="16">
+                <g class="ip__track" stroke="#ddd">
+                    <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+                <g stroke-dasharray="180 656">
+                    <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+                    <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+                </g>
+            </g>
+        </svg>
+    </main>
+</div>
+<div class="font-family" *ngIf="matchData">
+    <header class="sticky-header">
+        <nav>
+            <ul>
+              <div style="float:left; width: 15%;">&nbsp;</div>
+              <li><a href="/iplseries/{{season}}/matches">HOME</a></li>
+              <li><a href="/iplseries/{{season}}/teams">TEAMS</a></li>
+              <li><a href="/iplseries/{{season}}/points-table">POINTS TABLE</a></li>
+              <div style="float: right; cursor: pointer;">
+                <a href="/admin/login">
+                  <li style="margin: 0; text-decoration: none; color: aliceblue;"> Admin Login </li>
+                  <img style="margin-right: 10px;" src="https://cdn-icons-png.flaticon.com/512/10405/10405572.png" width="35px" height="35px" alt="account">
+                </a>
+              </div>
+          </ul>
+        </nav>
+    </header>
+    <div class="bg-color-prof">
+        <br>
+        <br>
+        <!-- Main content of the website goes here -->
+        <div class="m-content body-margin">
+            <div class="h6 ds-font-bold" style="font-size: 22px;"> IPL {{ matchData.matchStatistics.date.split("-")[2] }} Results </div>
+        </div>
+
+        <div class="matches-div body-margin">
+            <div class="ds-flex ds-flex-column ds-items-center ds-justify-start ds-justify-between ds-pd">
+                <div class="ds-flex ds-flex-column ds-gap">
+                    <div class="ds-flex ds-flex-column ds-gap">
+                        <p style="font-size: 15px; opacity:80%;">
+                            {{ matchData.matchStatistics.date }},
+                            {{ matchData.matchStatistics.matchNumber }}{{ (matchData.matchStatistics.matchNumber % 10 == 1) ? "st" : ((matchData.matchStatistics.matchNumber % 10 == 2) ? "nd" : ((matchData.matchStatistics.matchNumber % 10 == 3) ? "rd" : "th")) }} Match,
+                            {{ matchData.matchStatistics.location }}, {{ matchData.matchStatistics.venue }}
+                        </p>
+                        <div style="margin-left: 50px; margin-right: 75px; line-height: 25px;" class="ds-flex ds-flex-column ds-gap">
+                            <div class="ds-flex ds-flex-column ds-gap">
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="matchData.matchStatistics.team1 === matchData.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ matchData.matchStatistics.team1 }}</div>
+                                    <div>{{ matchData.matchStatistics.team1Score }}/{{ matchData.matchStatistics.team1Wickets }}</div>
+                                </div>
+                                <div class="ds-flex ds-flex-row ds-justify-between" [style.font-weight]="matchData.matchStatistics.team2 === matchData.matchStatistics.winner ? 'bold' : 'normal'">
+                                    <div>{{ matchData.matchStatistics.team2 }}</div>
+                                    <div>
+                                        <span style="opacity: 75%">(overs: {{ matchData.matchStatistics.team2Overs }}/{{ matchData.matchStatistics.team2Overs < 20.0 ? (matchData.matchStatistics.team2Wickets < 10 ? (matchData.matchStatistics.team2Score < matchData.matchStatistics.team1Score ? matchData.matchStatistics.team2Overs : 20) : 20) : 20 }})</span>
+                                        {{ matchData.matchStatistics.team2Score }}/{{ matchData.matchStatistics.team2Wickets }}
+                                    </div>
+                                </div>
+                                <div class="ds-flex ds-justify-center">
+                                    <p *ngIf="matchData.matchStatistics.winner !== 'No Result'">
+                                        {{ matchData.matchStatistics.winner }} won by {{ matchData.matchStatistics.winnerRuns === 0 ? '' : (matchData.matchStatistics.winnerRuns + ' runs') }}{{ matchData.matchStatistics.winnerWickets === 0 ? '' : (' ' + matchData.matchStatistics.winnerWickets + ' wickets') }}{{ matchData.matchStatistics.team2Overs < 20.0 ? (matchData.matchStatistics.team2Wickets < 10 ? (matchData.matchStatistics.team2Score < matchData.matchStatistics.team1Score ? ' (DLS Method)' : '') : '') : '' }}
+                                    </p>
+                                    <p *ngIf="matchData.matchStatistics.winner === 'No Result'">No Result</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <header class="sticky-headers">
+                    <nav class="ds-border-top">
+                        <ul>
+                            <li class="ds-current-page"><a routerLink="/matches/{{ matchNumber }}/info" routerLinkActive="active" ariaCurrentWhenActive="page" >INFO</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/commentary" routerLinkActive="active" ariaCurrentWhenActive="page" >COMMENTARY</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/scorecard" routerLinkActive="active" ariaCurrentWhenActive="page" > SCORECARD </a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/points-table" routerLinkActive="active" ariaCurrentWhenActive="page" >TABLE</a></li>
+                            <li><a routerLink="/iplseries/{{season}}/matches/{{ matchNumber }}/squads" routerLinkActive="active" ariaCurrentWhenActive="page" >SQUADS</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <br>
+    
+        <div class="body-margin">
+            <div class="ds-box">
+    
+                <div class="ds-flex ds-py-3 bg-blue">
+                    <div class="ds-flex ds-flex-col ds-grow ds-justify-center">
+                        <span class="ds-text-title-ys ds-font-bold ds-capitalize ds-font-large"> Match Information </span>
+                    </div>
+                </div>
+    
+                <div class="w-full ds-flex ds-text-title-xs border-b border-solid ds-bg-bordergrey">                    
+                    <div class="w-1/2  p-8 ds-font-medium">
+                        <div class="ds-flex p-2 ds-border-bt"> Match </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Series </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Date </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Toss </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Venue </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Umpire 1 </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Umpire 2 </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Reserve Umpire </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Referee </div>
+                        <div class="ds-flex p-2 ds-border-bt"> Man Of The Match </div>
+                    </div>
+                    <div class="w-1/2  p-8 ds-font-medium">
+                        <div class="ds-flex p-2 ds-border-bt-rgt">
+                            {{ matchData.matchStatistics.shortTeam1 }} vs {{ matchData.matchStatistics.shortTeam2 }} •
+                            {{ matchData.matchData.matchNumber }} {{ (matchData.matchStatistics.matchNumber % 10 == 1) ? "st" : ((matchData.matchStatistics.matchNumber % 10 == 2) ? "nd" : ((matchData.matchStatistics.matchNumber % 10 == 3) ? "rd" : "th")) }} Match •
+                            Indian Premier League (IPL)
+                        </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> Indian Premier League (IPL) </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.date }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.tossWinner }} won the toss and opt to {{ matchData.matchData.tossDecision}} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.stadium }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.umpire1 }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.umpire2 }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.reserveUmpire }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.manOfMatch }} </div>
+                        <div class="ds-flex p-2 ds-border-bt-rgt"> {{ matchData.matchData.referee }} </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+<router-outlet />

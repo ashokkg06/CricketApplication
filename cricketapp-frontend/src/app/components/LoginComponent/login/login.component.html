@@ -1,0 +1,22 @@
+<div class="ds-container-center">
+  <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+    <div style="display: flex; flex-direction: column; border: 1px solid; padding: 45px; background-color: #f9f9f9;">
+        <h2 style="text-align: center;">Admin Login</h2>
+        <hr>
+        <br>
+        <div class="form-group">
+        <label for="email" class="ds-padding-right" style="width: 83px;">Email:</label>
+        <input style="border: 1px solid;" type="email" id="email" name="email" ngModel required>
+        </div>
+        <div class="form-group">
+        <label for="password" class="ds-padding-right">Password:</label>
+        <input style="border: 1px solid;" type="password" id="password" name="password" ngModel required>
+        </div>
+        <p style="font-size: 12px; color: red;"> {{ response?.message}} </p> 
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+    </div>
+  </form>
+  <br>
+  <br>
+  <button (click)="homepage()" class="btn btn-primary" style="background-color: darkgreen; border: 1px solid darkgreen;"> Go to Home Page </button>
+</div>

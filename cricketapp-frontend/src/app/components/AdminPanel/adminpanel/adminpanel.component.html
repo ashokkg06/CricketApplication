@@ -1,0 +1,24 @@
+
+<div class="ds-container-center">
+    <h2 class="ds-color-white"> {{ message }}</h2>
+    <br>
+    <div class="header">
+        <div class="header-left">
+            <button (click)="register()" >Add Admin</button>
+        </div>
+        <div class="header-right">
+            <button (click)="logout()">Logout</button>
+        </div>
+    </div>
+    <div class="box">
+        <h3>Upload IPL Dataset</h3>
+        <hr>
+        <input type="file" id="file1" (change)="onFile1Selected($event)" accept=".csv" hidden>
+        <label for="file1" class="custom-file-upload">Upload Ball Record Data</label>
+        <input type="file" id="file2" (change)="onFile2Selected($event)" accept=".csv" hidden>
+        <label for="file2" class="custom-file-upload">Upload Match Record Data</label>
+        <p>*Note: supports only csv files</p>
+        <button (click)="onUpload()">Upload</button>
+    </div>
+</div>
+
