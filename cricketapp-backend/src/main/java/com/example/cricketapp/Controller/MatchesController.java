@@ -1,5 +1,6 @@
 package com.example.cricketapp.Controller;
 
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.example.cricketapp.DTO.*;
 import com.example.cricketapp.Model.*;
 import com.example.cricketapp.Service.*;
@@ -164,17 +165,4 @@ public class MatchesController {
         }
         return null;
     }
-
-//    @GetMapping("/points-table")
-//    public ModelAndView getPointsTable(@PathVariable("season") int season) {
-//        if(season == 2022) Keyspace.setSeason22();
-//        else Keyspace.setSeason23();
-//        ModelAndView mv = new ModelAndView();
-//        MatchStatistics matchStatistics = new MatchStatistics();
-//        List<PointsTableData> list = pointsTableService.getPointsTable(season);
-//        mv.addObject("statistics", matchStatistics);
-//        mv.addObject("data", list);
-//        mv.setViewName("pointstable");
-//        return mv;
-//    }
 }

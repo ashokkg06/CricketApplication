@@ -2,6 +2,8 @@ package com.example.cricketapp;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.cluster.HealthResponse;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
@@ -9,6 +11,7 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
+import com.example.cricketapp.Model.MatchReport;
 import com.example.cricketapp.keyspace.Keyspace;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -40,6 +43,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.List;
 
 @SpringBootApplication
 public class CricketappApplication {
@@ -79,12 +83,5 @@ public class CricketappApplication {
 
 		HealthResponse healthResponse = client.cluster().health();
 		System.out.printf("Elasticsearch status is: [%s]", healthResponse.status());
-//		Keyspace.setSeason22();
-//		dbService.createKeySpace(Keyspace.getKeyspaceName());
-//		dbService.createTables();
-//		dbService.importCSV();
-//		dbService.createMaterializedViews();
-//		dbService.createFunctions();
-//		dbService.insertValues();
 	}
 }

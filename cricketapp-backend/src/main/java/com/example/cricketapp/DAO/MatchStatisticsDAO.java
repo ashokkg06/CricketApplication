@@ -1,9 +1,11 @@
 package com.example.cricketapp.DAO;
 
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.example.cricketapp.Model.MatchStatistics;
 import com.example.cricketapp.config.CassandraConfigLoader;
 import com.example.cricketapp.keyspace.Keyspace;
@@ -19,10 +21,10 @@ public class MatchStatisticsDAO {
         List<MatchStatistics> list = new ArrayList<>();
 
         try (CqlSession session = CqlSession.builder().withConfigLoader(CassandraConfigLoader.getConfigLoader()).withKeyspace(CqlIdentifier.fromCql(Keyspace.getKeyspaceName())).build()) {
-            for(int i=1; i<=75; i+=15) {
+            for(int i=1; i<=75; i+=30) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("(");
-                for (int j = i; j <= i+14 && j<=75; j++) {
+                for (int j = i; j <= i+29 && j<=75; j++) {
                     sb.append(j).append(",");
                 }
                 sb.deleteCharAt(sb.length() - 1);
@@ -32,8 +34,14 @@ public class MatchStatisticsDAO {
                 String query2 = "SELECT match_no, SUM(get_score_1(score, inningno)) as teamscore1, SUM(get_score_2(score, inningno)) as teamscore2, SUM(get_wickets_1(outcome, inningno)) as teamwickets1,  SUM(get_wickets_2(outcome, inningno)) as teamwickets2 , COUNT(get_overs_1(outcome, inningno))/6 + CAST(COUNT(get_overs_1(outcome, inningno))%6/10.0 as double) as teamover1, COUNT(get_overs_2(outcome, inningno))/6 + CAST(COUNT(get_overs_2(outcome, inningno))%6/10.0 as double) as teamover2 from ballrecord where match_no IN " + range + " group by match_no ALLOW FILTERING;";
                 System.out.println("QUERY1 EXECUTED: " + query1);
                 System.out.println("QUERY2 EXECUTED: " + query2);
-                ResultSet result1 = session.execute(query1);
-                ResultSet result2 = session.execute(query2);
+                SimpleStatement statement1 = SimpleStatement.builder(query1)
+                        .setConsistencyLevel(ConsistencyLevel.LOCAL_ONE)
+                        .build();
+                SimpleStatement statement2 = SimpleStatement.builder(query2)
+                        .setConsistencyLevel(ConsistencyLevel.LOCAL_ONE)
+                        .build();
+                ResultSet result1 = session.execute(statement1);
+                ResultSet result2 = session.execute(statement2);
                 List<Row> row2 = result2.all();
                 int index = 0;
                 for (Row rs1 : result1) {
